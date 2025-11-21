@@ -260,6 +260,12 @@
             <label for="gatewayMerchantId">Gateway Merchant ID:</label>
             <input type="text" id="gatewayMerchantId" value="acc_6p1ceO4Z0AF2YHGn8NNKk6" placeholder="e.g., acc_xxxxx">
             
+            <label for="googleMerchantId">Google Merchant ID:</label>
+            <input type="text" id="googleMerchantId" value="" placeholder="e.g., 12345678901234567890">
+            
+            <label for="merchantOrigin">Merchant Origin (domain):</label>
+            <input type="text" id="merchantOrigin" value="" placeholder="e.g., yourusername.github.io">
+            
             <button onclick="initializeGooglePay()">Initialize Google Pay</button>
         </div>
         
@@ -311,7 +317,9 @@
         let paymentsClient = null;
         let config = {
             gateway: 'justifi',
-            gatewayMerchantId: 'acc_6p1ceO4Z0AF2YHGn8NNKk6'
+            gatewayMerchantId: 'acc_6p1ceO4Z0AF2YHGn8NNKk6',
+            googleMerchantId: '',
+            merchantOrigin: ''
         };
 
         const baseRequest = {
@@ -333,9 +341,21 @@
         function initializeGooglePay() {
             config.gateway = document.getElementById('gateway').value;
             config.gatewayMerchantId = document.getElementById('gatewayMerchantId').value;
+            config.googleMerchantId = document.getElementById('googleMerchantId').value;
+            config.merchantOrigin = document.getElementById('merchantOrigin').value;
 
             if (!config.gatewayMerchantId) {
                 showStatus('Please enter Gateway Merchant ID', 'error');
+                return;
+            }
+            
+            if (!config.googleMerchantId) {
+                showStatus('Please enter Google Merchant ID', 'error');
+                return;
+            }
+            
+            if (!config.merchantOrigin) {
+                showStatus('Please enter Merchant Origin', 'error');
                 return;
             }
 
@@ -394,7 +414,9 @@
                     countryCode: 'US'
                 },
                 merchantInfo: {
-                    merchantName: 'JustiFi Payment Test'
+                    merchantName: 'JustiFi Payment Test',
+                    merchantId: config.googleMerchantId,
+                    merchantOrigin: config.merchantOrigin
                 }
             };
         }
