@@ -245,6 +245,7 @@
             background: #5568d3;
         }
     </style>
+    <script type='module' src='https://cdn.jsdelivr.net/npm/@justifi/webcomponents@6.5.0-rc.1/dist/webcomponents/webcomponents.esm.js'></script>
 </head>
 <body>
     <div class="container">
@@ -264,6 +265,10 @@
         </div>
         
         <div class="payment-section" id="payment-section">
+            <justifi-modular-checkout id="modular-checkout">
+                <justifi-google-pay></justifi-google-pay>
+            </justifi-modular-checkout>
+
             <div class="product-info">
                 <div class="product-name">Test Payment</div>
                 <div class="product-price" id="display-price">$10.00</div>
@@ -460,6 +465,27 @@
         document.getElementById('amount').addEventListener('input', function(e) {
             const amount = parseFloat(e.target.value) || 0;
             document.getElementById('display-price').textContent = '$' + amount.toFixed(2);
+        });
+
+        const modularCheckout = document.getElementById('modular-checkout');
+        const urlParams = new URLSearchParams(window.location.search);
+        const webComponentToken = urlParams.get('web_component_token');
+        const checkoutId = urlParams.get('checkout_id');
+
+        if (webComponentToken) {
+            modularCheckout.setAttribute('auth-token', webComponentToken);
+        }
+        
+        if (checkoutId) {
+            modularCheckout.setAttribute('checkout-id', checkoutId);
+        }
+
+        modularCheckout.addEventListener('submit-event', function(e) {
+            console.log('Checkout completed:', e.detail);
+        });
+
+        modularCheckout.addEventListener('error-event', function(e) {
+            console.log('Checkout error:', e.detail);
         });
     </script>
 </body>
