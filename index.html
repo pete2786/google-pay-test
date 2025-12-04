@@ -249,7 +249,7 @@
 <body>
     <div class="container">
         <h1>💳 Google Pay - JustiFi</h1>
-        <p class="subtitle">PRODUCTION environment - Deploy to HTTPS domain</p>
+        <p class="subtitle">TEST environment - For development and testing</p>
         
         <div class="config-section">
             <h3>⚙️ Gateway Configuration</h3>
@@ -294,15 +294,14 @@
         </div>
         
         <div class="info-box">
-            <h3>⚠️ PRODUCTION Mode Requirements</h3>
-            <p><strong>To get real encrypted tokens, you need:</strong></p>
-            <p>• HTTPS-enabled domain (use Netlify, Vercel, GitHub Pages)</p>
-            <p>• Domain registered in Google Pay Console</p>
-            <p>• Valid Google Merchant ID (get from pay.google.com/business/console)</p>
-            <p style="margin-top: 10px;"><strong>Quick Deploy Options:</strong></p>
-            <p>• Netlify Drop - drag this HTML file</p>
-            <p>• Vercel - deploy from GitHub</p>
-            <p>• GitHub Pages - push to repo</p>
+            <h3>⚠️ TEST Mode Information</h3>
+            <p><strong>Test mode allows you to:</strong></p>
+            <p>• Test Google Pay integration locally without HTTPS</p>
+            <p>• Use test payment methods and cards</p>
+            <p>• Develop and debug without production setup</p>
+            <p style="margin-top: 10px;"><strong>Note:</strong></p>
+            <p>• Test mode works on localhost and HTTP connections</p>
+            <p>• Use test cards from Google Pay documentation</p>
         </div>
     </div>
 
@@ -320,7 +319,7 @@
         };
 
         const allowedCardNetworks = ['MASTERCARD', 'VISA', 'AMEX', 'DISCOVER'];
-        const allowedCardAuthMethods = ['PAN_ONLY', 'CRYPTOGRAM_3DS'];
+        const allowedCardAuthMethods = ['CRYPTOGRAM_3DS'];
 
         const baseCardPaymentMethod = {
             type: 'CARD',
@@ -340,7 +339,7 @@
             }
 
             paymentsClient = new google.payments.api.PaymentsClient({
-                environment: 'PRODUCTION'
+                environment: 'TEST'
             });
 
             paymentsClient.isReadyToPay({
@@ -352,7 +351,7 @@
                 if (response.result) {
                     addGooglePayButton();
                     document.getElementById('payment-section').classList.add('active');
-                    showStatus('Google Pay initialized in PRODUCTION mode', 'success');
+                    showStatus('Google Pay initialized in TEST mode', 'success');
                 } else {
                     showStatus('Google Pay is not available', 'error');
                 }
